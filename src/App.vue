@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { createRandomGameBoard, createBoardData } from './logic/game';
+import { createRandomGameBoard, createBoardData, type Position } from './logic/game';
 import { MINE } from './constants';
+
 const size = 10
-const bombs = 10
+const bombs = 15
 const gameBoardData = createBoardData(createRandomGameBoard(size, bombs))
+
+function checkPosition(position: Position) {
+  console.log(position)
+}
 </script>
 
 <template>
   <div class="board">
     <div class="row" v-for="(row, i) in gameBoardData" :key="`row${i}`">
-      <div class="cell" v-for="(cell, j) in row" :key="`cell${j}`">
+      <div class="cell" v-for="(cell, j) in row" :key="`cell${j}`" @click="checkPosition({x:i, y:j})">
         {{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}
       </div>
     </div>
@@ -30,6 +35,7 @@ const gameBoardData = createBoardData(createRandomGameBoard(size, bombs))
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  cursor: pointer;
 }
 
 
