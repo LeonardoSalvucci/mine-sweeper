@@ -50,8 +50,15 @@ export function createRandomGameBoard(size = 10, bombs = 5): string[][] {
 
   const mineBoard = Array(size).fill('').map(() => Array(size).fill(''))
   for(let i = 0; i < bombs; i++) {
-    const x = Math.floor(Math.random()*(size-1))
-    const y = Math.floor(Math.random()*(size-1))
+    let x = Math.floor(Math.random()*(size-1))
+    let y = Math.floor(Math.random()*(size-1))
+    
+    // Ensure that the mine is not placed on an existing mine
+    while(mineBoard[x][y] === MINE) {
+      x = Math.floor(Math.random()*(size-1))
+      y = Math.floor(Math.random()*(size-1))
+    }
+    
     mineBoard[x][y] = MINE
   }
   return mineBoard
