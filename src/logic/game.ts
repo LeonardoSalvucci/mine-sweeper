@@ -46,10 +46,10 @@ export function createBoardData(mineBoard: string[][]): string[][] {
   return board
 }
 
-export function createRandomGameBoard(size = 10): string[][] {
+export function createRandomGameBoard(size = 10, bombs = 5): string[][] {
 
   const mineBoard = Array(size).fill('').map(() => Array(size).fill(''))
-  for(let i = 0; i < 5; i++) {
+  for(let i = 0; i < bombs; i++) {
     const x = Math.floor(Math.random()*(size-1))
     const y = Math.floor(Math.random()*(size-1))
     mineBoard[x][y] = MINE

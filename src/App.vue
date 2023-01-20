@@ -2,7 +2,8 @@
 import { createRandomGameBoard, createBoardData } from './logic/game';
 import { MINE } from './constants';
 const size = 10
-const gameBoardData = createBoardData(createRandomGameBoard(size))
+const bombs = 10
+const gameBoardData = createBoardData(createRandomGameBoard(size, bombs))
 </script>
 
 <template>
