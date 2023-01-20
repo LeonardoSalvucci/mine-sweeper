@@ -3,7 +3,6 @@ import { createRandomGameBoard, createBoardData } from './logic/game';
 import { MINE } from './constants';
 const size = 10
 const gameBoardData = createBoardData(createRandomGameBoard(size))
-console.log(gameBoardData)
 </script>
 
 <template>
@@ -20,10 +19,8 @@ console.log(gameBoardData)
 <style scoped>
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(v-bind(size), 1fr);
   background-color: #fff;
-}
-.row {
 }
 .cell {
   border: 1px solid #101010;
