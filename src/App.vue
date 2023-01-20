@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { createRandomGameBoard, createBoardData } from './logic/game';
+import { MINE } from './constants';
 const size = 10
-const gameBoard = createRandomGameBoard(10)
-console.log(gameBoard)
-const gameBoardData = createBoardData(gameBoard)
+const gameBoardData = createBoardData(createRandomGameBoard(size))
 console.log(gameBoardData)
 </script>
 
 <template>
   <div class="board">
-    <div class="row" v-for="(row, i) in gameBoard" :key="`row${i}`">
+    <div class="row" v-for="(row, i) in gameBoardData" :key="`row${i}`">
       <div class="cell" v-for="(cell, j) in row" :key="`cell${j}`">
-        {{ cell }}
+        {{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}
       </div>
     </div>
   </div>
@@ -22,18 +21,17 @@ console.log(gameBoardData)
 .board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-}
-.row {
   background-color: #fff;
 }
+.row {
+}
 .cell {
-  padding: 5px;
   border: 1px solid #101010;
   height: 35px;
   width: 35px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 
