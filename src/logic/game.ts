@@ -50,8 +50,8 @@ export function createRandomGameBoard(size = 10): string[][] {
 
   const mineBoard = Array(size).fill('').map(() => Array(size).fill(''))
   for(let i = 0; i < 5; i++) {
-    const x = Math.ceil(Math.random()*size)
-    const y = Math.ceil(Math.random()*size)
+    const x = Math.floor(Math.random()*(size-1))
+    const y = Math.floor(Math.random()*(size-1))
     mineBoard[x][y] = MINE
   }
   return mineBoard
