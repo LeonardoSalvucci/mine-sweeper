@@ -36,4 +36,13 @@ defineProps({
   padding: 20px;
   border-radius: 5px;
 }
+button {
+  border: 2px solid #101010;
+  background-color: #fff;
+  color: #101010;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 10px 20px;
+  cursor: pointer;
+}
 </style>

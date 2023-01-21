@@ -103,6 +103,7 @@ function newGame() {
   font-size: inherit;
   display: flex;
   cursor: pointer;
+  vertical-align: text-bottom;
 }
 .overlap {
   position: relative;
