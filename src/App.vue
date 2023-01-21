@@ -73,39 +73,6 @@ function newGame() {
   overlapBoard.board = Array(size).fill(1).map(() => Array(size).fill(1)) // 1 means overlaped and 0 means that is visible
 }
 
-// function showCellAndCheckAdjacents(position: Position, gameBoardData: Board, overlapBoard: Board, visitedPositions: Position[]) {
-//   // This function is called when cell data is 0, so we must check neighbors
-//   visitedPositions.push(position)
-//   console.log(visitedPositions)
-//   overlapBoard.board[position.x][position.y] = 0
-//   if (gameBoardData.board[position.x][position.y] > 0) return
-//   const neighbors = getNeighbors(position, gameBoardData.board).filter(position => !visitedPositions.some(visitedPosition => visitedPosition.x === position.x && visitedPosition.y === position.y))
-//   console.log(neighbors)
-//   neighbors.forEach(neighbor: Position => {
-//     if(gameBoardData[neighbor.x][neighbor.y] === 0) { // This means that the cell is empty and must check it's adjacents too
-//       showCellAndCheckAdjacents(neighbor, gameBoardData, overlapBoard, visitedPositions)
-//     } else {
-//       overlapBoard[neighbor.x][neighbor.y] = 0
-//     }
-//   })
-// }
-
-// function checkPosition(position: Position) {
-//   // We have to check if the position has a mine and we lose the game
-//   console.log(gameBoardData[position.x][position.y])
-//   if(isMine(position, gameBoardData)) {
-//     alert('You lose')
-//   }
-//   // We have to check if the position has a number and we show the number
-//   if(gameBoardData[position.x][position.y] > 0) {
-//     overlapBoard[position.x][position.y] = 0
-//   } else {
-//     // We have to check if the position has a 0 and we show the 0 and the adjacent cells
-//     showCellAndCheckAdjacents(position, gameBoardData, overlapBoard, [])
-//   }
-//   console.log(position)
-//   console.log(overlapBoard)
-// }
 </script>
 
 <template>
