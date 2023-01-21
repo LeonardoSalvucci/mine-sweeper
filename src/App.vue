@@ -12,8 +12,8 @@ import { MINE } from './constants';
 interface Board {
   board: number[][];
 }
-const size = 5
-const bombs = 2
+const size = ref(5)
+const bombs = ref(2)
 
 const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
@@ -38,8 +38,8 @@ function handleClick(position: Position) {
 }
 
 function newGame() {
-  gameBoardData.board = createBoardData(createRandomGameBoard(size, bombs))
-  overlapBoard.board = Array(size).fill(1).map(() => Array(size).fill(1)) // 1 means overlaped and 0 means that is visible
+  gameBoardData.board = createBoardData(createRandomGameBoard(size.value, bombs.value))
+  overlapBoard.board = Array(size.value).fill(1).map(() => Array(size.value).fill(1)) // 1 means overlaped and 0 means that is visible
   inGame.value = true
 }
 
