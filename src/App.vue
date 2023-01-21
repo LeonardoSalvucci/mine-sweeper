@@ -1,32 +1,46 @@
 <script setup lang="ts">
-import { reactive, onMounted, toRefs } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 
 import { 
   type Position, 
   createRandomGameBoard, 
   createBoardData, 
-  checkPosition, } from './logic/game';
+  checkPosition,
+  checkWinCondition
+} from './logic/game';
 import { MINE } from './constants';
 interface Board {
   board: number[][];
 }
 const size = 5
 const bombs = 2
+
 const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
+const inGame = ref(true)
 
 onMounted(() => {
-  gameBoardData.board = createBoardData(createRandomGameBoard(size, bombs))
-  overlapBoard.board = Array(size).fill(1).map(() => Array(size).fill(1)) // 1 means overlaped and 0 means that is visible
+  newGame()
 })
 
 function handleClick(position: Position) {
-  checkPosition(position, gameBoardData.board, overlapBoard.board)
+  if(inGame.value) {
+    if(!checkPosition(position, gameBoardData.board, overlapBoard.board)) {
+      alert('You Lose')
+      inGame.value = false
+    }
+
+    if(checkWinCondition(gameBoardData.board, overlapBoard.board)) {
+      alert('You Win')
+      inGame.value = false
+    }
+  }
 }
 
 function newGame() {
   gameBoardData.board = createBoardData(createRandomGameBoard(size, bombs))
   overlapBoard.board = Array(size).fill(1).map(() => Array(size).fill(1)) // 1 means overlaped and 0 means that is visible
+  inGame.value = true
 }
 
 </script>
@@ -38,7 +52,9 @@ function newGame() {
           cell: true,
           overlap: overlapBoard.board[i][j] === 1
       }" v-for="(cell, j) in row" :key="`cell${j}`" @click="handleClick({x:i, y:j})">
-        {{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}
+        <span :class="{
+          hidden: overlapBoard.board[i][j] === 1
+        }">{{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}</span>
       </div>
     </div>
   </div>
@@ -70,5 +86,10 @@ function newGame() {
 .overlap {
   position: relative;
   background-color: #101010;
+  display: block;
+  border: 1px solid #fff;
+}
+.hidden {
+  display: none;
 }
 </style>
