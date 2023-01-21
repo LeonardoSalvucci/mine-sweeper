@@ -22,6 +22,7 @@ onMounted(() => {
 })
 
 function checkPosition(position: Position) {
+  console.log(position)
   // Check if current position is already visited
   if(overlapBoard.board[position.x][position.y] === 0) return
 
@@ -78,7 +79,10 @@ function newGame() {
 <template>
   <div class="board">
     <div class="row" v-for="(row, i) in gameBoardData.board" :key="`row${i}`">
-      <div class="cell" v-for="(cell, j) in row" :key="`cell${j}`" @click="checkPosition({x:j, y:i})">
+      <div :class="{
+          cell: true,
+          overlap: overlapBoard.board[i][j] === 1
+      }" v-for="(cell, j) in row" :key="`cell${j}`" @click="checkPosition({x:i, y:j})">
         {{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}
       </div>
     </div>
@@ -108,5 +112,8 @@ function newGame() {
   justify-content: center;
   align-items: center;
 }
-
+.overlap {
+  position: relative;
+  background-color: #101010;
+}
 </style>
