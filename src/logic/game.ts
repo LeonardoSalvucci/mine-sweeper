@@ -94,22 +94,40 @@ function showCellAndCheckAdjacents(position: Position, gameBoard: number[][], ov
   })
 }
 
-export function checkPosition(position: Position, gameBoard: number[][], overlapBoard: number[][]) {
+/**
+ * 
+ * @param position current Position
+ * @param gameBoard Game board with mine data
+ * @param overlapBoard Game board with uncovered positions
+ * @returns boolean if the game is over then return false else return true
+ */
+export function checkPosition(position: Position, gameBoard: number[][], overlapBoard: number[][]): boolean {
   // Check if current position is already visited
-  if(overlapBoard[position.x][position.y] === 0) return
+  if(overlapBoard[position.x][position.y] === 0) return true
 
   // Verify if current position is a mine
   if(gameBoard[position.x][position.y] === -1) {
-    alert('You lose')
-    return
+    return false
   }
 
   // Verify if current position is a number
   if (gameBoard[position.x][position.y] > 0) {
     overlapBoard[position.x][position.y] = 0
-    return
+    return true
   }
 
   // Verify if current position is a 0 and we have to show the 0 and the adjacent cells
   showCellAndCheckAdjacents(position, gameBoard, overlapBoard, [])
+  return true
+}
+
+export function checkWinCondition(gameBoard: number[][], overlapBoard: number[][]): boolean {
+  for(let i = 0; i < gameBoard.length; i++) {
+    for(let j = 0; j < gameBoard[i].length; j++) {
+      if (gameBoard[i][j] !== -1 && overlapBoard[i][j] === 1) {
+        return false
+      }
+    }
+  }
+  return true
 }
