@@ -78,6 +78,7 @@ function newGame() {
   display: grid;
   grid-template-columns: repeat(v-bind(size), 1fr);
   background-color: #fff;
+  margin-bottom: 20px;
 }
 .cell {
   border: 1px solid #101010;
@@ -93,6 +94,16 @@ function newGame() {
   justify-content: center;
   align-items: center;
 }
+.actions button {
+  padding: 10px;
+  border: 1px solid #101010;
+  background-color: #fff;
+  color: #101010;
+  font-family: inherit;
+  font-size: inherit;
+  display: flex;
+  cursor: pointer;
+}
 .overlap {
   position: relative;
   background-color: #101010;
@@ -102,4 +113,5 @@ function newGame() {
 .hidden {
   display: none;
 }
+
 </style>
