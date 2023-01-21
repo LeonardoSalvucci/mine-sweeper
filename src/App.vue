@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue'
+import WinnerModal from './components/WinnerModal.vue'
 
 import { 
   type Position, 
@@ -12,16 +13,21 @@ import { MINE } from './constants';
 interface Board {
   board: number[][];
 }
-const size = ref(5)
-const bombs = ref(2)
+const size = ref(15)
+const bombs = ref(5)
 
 const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
 const inGame = ref(true)
+const showWinnerModal = ref(false)
 
 onMounted(() => {
   newGame()
 })
+
+function showBombs() {
+  overlapBoard.board = gameBoardData.board.map(row => row.map(cell => 0))
+}
 
 function handleClick(position: Position) {
   if(inGame.value) {
@@ -31,7 +37,10 @@ function handleClick(position: Position) {
     }
 
     if(checkWinCondition(gameBoardData.board, overlapBoard.board)) {
-      alert('You Win')
+      showBombs()
+
+      showWinnerModal.value = true
+
       inGame.value = false
     }
   }
@@ -61,6 +70,7 @@ function newGame() {
   <section class="actions">
     <button type="button" @click="newGame">New Game</button>
   </section>
+  <WinnerModal :show-modal="showWinnerModal" @close="showWinnerModal = false" />
 </template>
 
 <style scoped>
