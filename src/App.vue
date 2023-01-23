@@ -233,6 +233,11 @@ function increaseTime() {
   background-color: #fff;
   margin: 20px auto 20px auto; 
   inline-size: fit-content;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .cell {
   border: 1px solid #101010;
