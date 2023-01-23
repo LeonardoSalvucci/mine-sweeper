@@ -9,6 +9,9 @@ import {
   checkPosition,
   checkWinCondition
 } from './logic/game';
+
+import { dispatchConfetti } from './logic/confetti';
+
 import { MINE } from './constants';
 interface Board {
   board: number[][];
@@ -38,7 +41,7 @@ function handleClick(position: Position) {
 
     if(checkWinCondition(gameBoardData.board, overlapBoard.board)) {
       showBombs()
-
+      dispatchConfetti()
       showWinnerModal.value = true
 
       inGame.value = false
