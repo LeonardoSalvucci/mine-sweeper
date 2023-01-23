@@ -22,3 +22,5 @@ export const gameSettings: GameSettings[] = [
 
 export const LEFT_CLICK = 1;
 export const RIGHT_CLICK = 3;
+
+export const TOUCH_HOLD = 500;

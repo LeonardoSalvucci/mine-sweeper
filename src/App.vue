@@ -14,8 +14,8 @@ import {
 
 import { dispatchConfetti } from './logic/confetti';
 
-import { MINE, FLAG, gameSettings } from './constants';
-import { Board, GameSettings } from './types';
+import { MINE, FLAG, gameSettings, TOUCH_HOLD } from './constants';
+import { Board, GameSettings, TouchTracker } from './types';
 
 const size = ref(15)
 const bombs = ref(5)
@@ -24,6 +24,14 @@ const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
 const flagsBoard: Board= reactive({board: [[]]})
 const inGame = ref(true)
+
+// Touch references
+let touchTracker: TouchTracker = {
+  event: undefined,
+  position: undefined,
+  lastTime: undefined,
+}
+let touchInterval: NodeJS.Timer;
 
 // Modal references
 const showModal = ref(false)
@@ -93,6 +101,37 @@ function handleClick(position: Position) {
   }
 }
 
+function handleTouch(position: Position) {
+  // When we receive a touchstart event we save the event and the time and start a interval to check if the user is holding the touch
+  touchTracker.event = 'start'
+  touchTracker.position = position
+  touchTracker.lastTime = Date.now()
+  touchInterval = setInterval(checkTouch, 100)
+}
+
+function checkTouch() {
+  // Check if the user is holding the touch
+  if(touchTracker.event === 'start' && touchTracker.lastTime && touchTracker.position) {
+    if(Date.now() - touchTracker.lastTime > TOUCH_HOLD) {
+      // If the user is holding the touch we change the event to hold
+      touchTracker.event = 'hold'
+    }
+  } else if(touchTracker.event === 'hold' && touchTracker.position) {
+    // We show the cell
+    toggleFlag(touchTracker.position)
+    clearInterval(touchInterval)
+  } else {
+    // If the user is not holding the touch we clear the interval
+    clearInterval(touchInterval)
+  }
+}
+
+function stopTouch() {
+  // When we receive a touchend event we clear the interval
+  clearInterval(touchInterval)
+  touchTracker.event = 'end'
+}
+
 function toggleFlag(position: Position) {
   console.log('RIGHT CLICK')
   if(inGame.value) { // Only when game is started
@@ -156,7 +195,9 @@ function increaseTime() {
           explosion: overlapBoard.board[i][j] === -1
         }" v-for="(cell, j) in row" :key="`cell${j}`" 
         @click="handleClick({x:i, y:j})" 
-        @click.right="toggleFlag({x:i, y:j})">
+        @click.right="toggleFlag({x:i, y:j})"
+        @touchstart="handleTouch({x:i, y:j})"
+        @touchend="stopTouch">
         <span :class="{
           hidden: overlapBoard.board[i][j] === 1
         }">
