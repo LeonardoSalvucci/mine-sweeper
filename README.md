@@ -16,4 +16,3 @@ pnpm run build
 ```
 
 Live Preview https://mine-sweeper-rho.vercel.app/
-WORK IN PROGRESS, MOSTLY STYLING!
