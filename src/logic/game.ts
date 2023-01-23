@@ -50,7 +50,6 @@ export function createBoardData(mineBoard: number[][]): number[][] {
 }
 
 export function createRandomGameBoard(size = 10, bombs = 5): number[][] {
-  console.log('CREATE')
   const mineBoard = Array(size).fill('').map(() => Array(size).fill(''))
   for(let i = 0; i < bombs; i++) {
     let x = Math.floor(Math.random()*(size-1))
