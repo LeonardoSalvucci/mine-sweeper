@@ -52,7 +52,7 @@ function handleClick(position: Position) {
   if(inGame.value) {
     if(!checkPosition(position, gameBoardData.board, overlapBoard.board)) {
       // Show bomb
-      overlapBoard.board[position.x][position.y] = 0
+      overlapBoard.board[position.x][position.y] = -1 // -1 means that is a bomb and exploded
       // Show loser modal
       showLoserModal()
       // Set gane as ended
@@ -108,7 +108,8 @@ function newGame(setting?: GameSettings) {
     <div class="row" v-for="(row, i) in gameBoardData.board" :key="`row${i}`">
       <div :class="{
           cell: true,
-          overlap: overlapBoard.board[i][j] === 1
+          overlap: overlapBoard.board[i][j] === 1,
+          explosion: overlapBoard.board[i][j] === -1
       }" v-for="(cell, j) in row" :key="`cell${j}`" @click="handleClick({x:i, y:j})">
         <span :class="{
           hidden: overlapBoard.board[i][j] === 1
@@ -142,6 +143,25 @@ function newGame(setting?: GameSettings) {
   justify-content: center;
   align-items: flex-end;
   cursor: pointer;
+}
+@keyframes explosion {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.explosion {
+  background-color: #f58686;
+  animation-duration: 1s;
+  animation-name: explosion;
+  animation-iteration-count: infinite;
+  z-index: 1;
+  position: sticky;
 }
 .actions {
   display: flex;

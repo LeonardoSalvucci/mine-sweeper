@@ -36,11 +36,13 @@ defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 .modal {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
+  z-index: 2;
 }
 button {
   border: 2px solid #101010;
