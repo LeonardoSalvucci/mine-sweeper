@@ -31,7 +31,7 @@ let touchTracker: TouchTracker = {
   position: undefined,
   lastTime: undefined,
 }
-let touchInterval: NodeJS.Timer;
+let touchInterval: number;
 
 // Modal references
 const showModal = ref(false)
@@ -40,7 +40,7 @@ const message = ref("")
 
 // Clock
 const elapsedTime = ref(10)
-let clockInterval: NodeJS.Timer;
+let clockInterval: number;
 
 onMounted(() => {
   // Disable context menu
@@ -106,7 +106,7 @@ function handleTouch(position: Position) {
   touchTracker.event = 'start'
   touchTracker.position = position
   touchTracker.lastTime = Date.now()
-  touchInterval = setInterval(checkTouch, 100)
+  touchInterval = window.setInterval(checkTouch, 100)
 }
 
 function checkTouch() {
@@ -167,7 +167,7 @@ function newGame(setting?: GameSettings) {
   // Start clock
   clearInterval(clockInterval) // prevent if clock is already running
   elapsedTime.value = 0
-  clockInterval = setInterval(increaseTime, 1000)
+  clockInterval = window.setInterval(increaseTime, 1000)
 }
 
 function increaseTime() {
