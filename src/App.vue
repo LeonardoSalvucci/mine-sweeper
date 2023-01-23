@@ -32,7 +32,7 @@ const message = ref("")
 
 // Clock
 const elapsedTime = ref(10)
-let clockInterval: number;
+let clockInterval: NodeJS.Timer;
 
 onMounted(() => {
   // Disable context menu
