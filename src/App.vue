@@ -12,10 +12,9 @@ import {
 
 import { dispatchConfetti } from './logic/confetti';
 
-import { MINE } from './constants';
-interface Board {
-  board: number[][];
-}
+import { MINE, gameSettings } from './constants';
+import { Board, GameSettings } from './types';
+
 const size = ref(15)
 const bombs = ref(5)
 
@@ -72,7 +71,22 @@ function handleClick(position: Position) {
   }
 }
 
-function newGame() {
+function newGame(setting?: GameSettings) {
+  if(setting) {
+    size.value = setting.size
+    bombs.value = setting.bombs
+  } else {
+    // Default game is junior
+    const junior = gameSettings.find(setting => setting.label === 'JUNIOR')
+    if (junior) {
+      size.value = junior.size
+      bombs.value = junior.bombs
+    } else {
+      // If junior is not defined in constants set hardcoded values
+      size.value = 9
+      bombs.value = 10
+    }
+  }
   gameBoardData.board = createBoardData(createRandomGameBoard(size.value, bombs.value))
   overlapBoard.board = Array(size.value).fill(1).map(() => Array(size.value).fill(1)) // 1 means overlaped and 0 means that is visible
   inGame.value = true
@@ -81,6 +95,13 @@ function newGame() {
 </script>
 
 <template>
+  <section class="actions">
+    <button 
+      v-for="setting in gameSettings"
+      :key="setting.label"
+      type="button" @click="newGame(setting)">{{ setting.label }}
+    </button>
+  </section>
   <div class="board">
     <div class="row" v-for="(row, i) in gameBoardData.board" :key="`row${i}`">
       <div :class="{
@@ -94,7 +115,7 @@ function newGame() {
     </div>
   </div>
   <section class="actions">
-    <button type="button" @click="newGame">New Game</button>
+    <button type="button" @click="newGame()">New Game</button>
   </section>
   <Modal 
     :show-modal="showModal" 
@@ -108,7 +129,8 @@ function newGame() {
   display: grid;
   grid-template-columns: repeat(v-bind(size), 1fr);
   background-color: #fff;
-  margin-bottom: 20px;
+  margin: 20px auto 20px auto; 
+  inline-size: fit-content;
 }
 .cell {
   border: 1px solid #101010;
@@ -123,6 +145,7 @@ function newGame() {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 .actions button {
   padding: 10px;
