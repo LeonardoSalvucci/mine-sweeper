@@ -2,6 +2,7 @@
 import { reactive, onMounted, ref } from 'vue'
 import Modal from './components/Modal.vue'
 import Social from './components/Social.vue'
+import Clock from './components/Clock.vue'
 
 import { 
   type Position, 
@@ -27,6 +28,10 @@ const inGame = ref(true)
 const showModal = ref(false)
 const title = ref("")
 const message = ref("")
+
+// Clock
+const elapsedTime = ref(10)
+let clockInterval: number;
 
 onMounted(() => {
   newGame()
@@ -57,6 +62,8 @@ function handleClick(position: Position) {
       showLoserModal()
       // Set gane as ended
       inGame.value = false
+      // Stop clock
+      clearInterval(clockInterval)
     }
 
     if(checkWinCondition(gameBoardData.board, overlapBoard.board)) {
@@ -68,6 +75,8 @@ function handleClick(position: Position) {
       showWinnerModal()
       // Set gane as ended
       inGame.value = false
+      // Stop clock
+      clearInterval(clockInterval)
     }
   }
 }
@@ -90,7 +99,20 @@ function newGame(setting?: GameSettings) {
   }
   gameBoardData.board = createBoardData(createRandomGameBoard(size.value, bombs.value))
   overlapBoard.board = Array(size.value).fill(1).map(() => Array(size.value).fill(1)) // 1 means overlaped and 0 means that is visible
+  
+  // Set game as started
   inGame.value = true
+  
+  // Start clock
+  clearInterval(clockInterval) // prevent if clock is already running
+  elapsedTime.value = 0
+  clockInterval = setInterval(increaseTime, 1000)
+}
+
+function increaseTime() {
+  if(inGame.value) {
+    elapsedTime.value += 1
+  }
 }
 
 </script>
@@ -118,7 +140,7 @@ function newGame(setting?: GameSettings) {
     </div>
   </div>
   <section class="actions">
-    <button type="button" @click="newGame()">New Game</button>
+    <Clock :elapsed-time="elapsedTime"/>
   </section>
   <Modal 
     :show-modal="showModal" 
