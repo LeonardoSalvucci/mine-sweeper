@@ -105,11 +105,21 @@ function newGame() {
   cursor: pointer;
   vertical-align: text-bottom;
 }
+.actions button:hover {
+  border: 1px solid #fff;
+  background-color: #101010;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+}
 .overlap {
   position: relative;
   background-color: #101010;
   display: block;
   border: 1px solid #fff;
+  transition: background-color 0.2s ease-in-out;
+}
+.overlap:hover {
+  background-color: #999;
 }
 .hidden {
   display: none;

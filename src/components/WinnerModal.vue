@@ -45,4 +45,10 @@ button {
   padding: 10px 20px;
   cursor: pointer;
 }
+button:hover {
+  border: 2px solid #fff;
+  background-color: #101010;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+}
 </style>
