@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue'
 import Modal from './components/Modal.vue'
+import Social from './components/Social.vue'
 
 import { 
   type Position, 
@@ -95,6 +96,7 @@ function newGame(setting?: GameSettings) {
 </script>
 
 <template>
+  <Social />
   <section class="actions">
     <button 
       v-for="setting in gameSettings"
