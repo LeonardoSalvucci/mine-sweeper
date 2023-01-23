@@ -141,7 +141,7 @@ function newGame(setting?: GameSettings) {
   width: 35px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   cursor: pointer;
 }
 @keyframes explosion {

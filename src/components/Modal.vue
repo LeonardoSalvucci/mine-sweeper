@@ -43,6 +43,7 @@ defineProps({
   padding: 20px;
   border-radius: 5px;
   z-index: 2;
+  font-size: 2rem;
 }
 button {
   border: 2px solid #101010;
