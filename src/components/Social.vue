@@ -27,18 +27,16 @@
 <style scopped>
 .container {
   position: fixed;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   left: 0;
   top: 0;
-
+  width:100%;
 }
 .social-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
@@ -62,5 +60,15 @@ img {
 img:hover {
   transform: scale(1.2);
   transition: all 0.3s ease-in-out;
+}
+@media (min-width: 30rem) {
+  .container {
+    height: 100%;
+    width: auto;
+  }
+
+  .social-container {
+    flex-direction: column;
+  }
 }
 </style>
