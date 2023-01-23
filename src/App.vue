@@ -48,7 +48,8 @@ onBeforeUnmount(() => {
 })
 
 function showBombs() {
-  overlapBoard.board = gameBoardData.board.map(row => row.map(cell => 0))
+  overlapBoard.board = gameBoardData.board.map(row => row.map(cell => 0)) // ahow all cells
+  flagsBoard.board = flagsBoard.board.map(row => row.map(cell => 0)) // remove all flags
 }
 
 function showWinnerModal() {
@@ -252,6 +253,7 @@ function increaseTime() {
   align-items: center;
   align-content: center;
   height: 100%;
+  background: radial-gradient(transparent 60%, white);
 }
 .hidden {
   display: none;
