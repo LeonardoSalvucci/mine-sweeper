@@ -1,6 +1,7 @@
 import { GameSettings } from "./types";
 
 export const MINE = '💣';
+export const FLAG = '🚩';
 export const gameSettings: GameSettings[] = [
   {
     label: 'JUNIOR',
@@ -18,3 +19,6 @@ export const gameSettings: GameSettings[] = [
     bombs: 99,
   }
 ]
+
+export const LEFT_CLICK = 1;
+export const RIGHT_CLICK = 3;

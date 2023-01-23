@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, ref } from 'vue'
+import { reactive, onMounted, ref, onBeforeUnmount } from 'vue'
 import Modal from './components/Modal.vue'
 import Social from './components/Social.vue'
 import Clock from './components/Clock.vue'
@@ -14,7 +14,7 @@ import {
 
 import { dispatchConfetti } from './logic/confetti';
 
-import { MINE, gameSettings } from './constants';
+import { MINE, FLAG, gameSettings } from './constants';
 import { Board, GameSettings } from './types';
 
 const size = ref(15)
@@ -22,6 +22,7 @@ const bombs = ref(5)
 
 const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
+const flagsBoard: Board= reactive({board: [[]]})
 const inGame = ref(true)
 
 // Modal references
@@ -34,7 +35,16 @@ const elapsedTime = ref(10)
 let clockInterval: number;
 
 onMounted(() => {
+  // Disable context menu
+  document.addEventListener('contextmenu', event => event.preventDefault())
   newGame()
+})
+
+onBeforeUnmount(() => {
+  // Clear interval
+  clearInterval(clockInterval)
+  // Clear Listener
+  document.removeEventListener('contextmenu', event => event.preventDefault())
 })
 
 function showBombs() {
@@ -54,7 +64,8 @@ function showLoserModal() {
 }
 
 function handleClick(position: Position) {
-  if(inGame.value) {
+
+  if(inGame.value && flagsBoard.board[position.x][position.y] === 0) { // Verify if there's a flag and prevent click
     if(!checkPosition(position, gameBoardData.board, overlapBoard.board)) {
       // Show bomb
       overlapBoard.board[position.x][position.y] = -1 // -1 means that is a bomb and exploded
@@ -81,6 +92,15 @@ function handleClick(position: Position) {
   }
 }
 
+function toggleFlag(position: Position) {
+  console.log('RIGHT CLICK')
+  if(inGame.value) { // Only when game is started
+    if(overlapBoard.board[position.x][position.y] === 1) { // Only when is not visible
+      flagsBoard.board[position.x][position.y] = flagsBoard.board[position.x][position.y] === 0 ? 1 : 0
+    }
+  }
+}
+
 function newGame(setting?: GameSettings) {
   if(setting) {
     size.value = setting.size
@@ -99,6 +119,7 @@ function newGame(setting?: GameSettings) {
   }
   gameBoardData.board = createBoardData(createRandomGameBoard(size.value, bombs.value))
   overlapBoard.board = Array(size.value).fill(1).map(() => Array(size.value).fill(1)) // 1 means overlaped and 0 means that is visible
+  flagsBoard.board = Array(size.value).fill(0).map(() => Array(size.value).fill(0)) // 1 means that is a flag and 0 means that is not a flag
   
   // Set game as started
   inGame.value = true
@@ -132,10 +153,15 @@ function increaseTime() {
           cell: true,
           overlap: overlapBoard.board[i][j] === 1,
           explosion: overlapBoard.board[i][j] === -1
-      }" v-for="(cell, j) in row" :key="`cell${j}`" @click="handleClick({x:i, y:j})">
+        }" v-for="(cell, j) in row" :key="`cell${j}`" 
+        @click="handleClick({x:i, y:j})" 
+        @click.right="toggleFlag({x:i, y:j})">
         <span :class="{
           hidden: overlapBoard.board[i][j] === 1
-        }">{{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}</span>
+        }">
+        {{ cell === -1 ? MINE : cell !== 0 ? `${cell}` : '' }}
+      </span>
+      <span v-if="flagsBoard.board[i][j] === 1" class="flag">{{ FLAG }}</span>
       </div>
     </div>
   </div>
@@ -217,6 +243,15 @@ function increaseTime() {
 }
 .overlap:hover {
   background-color: #999;
+}
+.flag {
+  font-size: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
 }
 .hidden {
   display: none;
