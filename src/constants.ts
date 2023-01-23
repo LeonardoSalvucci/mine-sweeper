@@ -1,7 +1,7 @@
 import { GameSettings } from "./types";
 
 export const MINE = '💣';
-export const FLAG = '🚩';
+export const FLAG = '🏳️' ;
 export const gameSettings: GameSettings[] = [
   {
     label: 'JUNIOR',
