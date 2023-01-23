@@ -187,6 +187,9 @@ function increaseTime() {
       type="button" @click="newGame(setting)">{{ setting.label }}
     </button>
   </section>
+  <section class="reference">
+    <p>Ref: Right click or touch hold will place a flag where you think there's a mine.</p>
+  </section>
   <div class="board">
     <div class="row" v-for="(row, i) in gameBoardData.board" :key="`row${i}`">
       <div :class="{
@@ -218,6 +221,12 @@ function increaseTime() {
 </template>
 
 <style scoped>
+.reference {
+  color: #fff;
+  font-size: 12px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: #999;
+}
 .board {
   display: grid;
   grid-template-columns: repeat(v-bind(size), 1fr);
@@ -299,5 +308,4 @@ function increaseTime() {
 .hidden {
   display: none;
 }
-
 </style>
