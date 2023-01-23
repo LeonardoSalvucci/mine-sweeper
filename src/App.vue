@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue'
-import WinnerModal from './components/WinnerModal.vue'
+import Modal from './components/Modal.vue'
 
 import { 
   type Position, 
@@ -22,7 +22,11 @@ const bombs = ref(5)
 const gameBoardData: Board= reactive({board: [[]]})
 const overlapBoard: Board= reactive({board: [[]]})
 const inGame = ref(true)
-const showWinnerModal = ref(false)
+
+// Modal references
+const showModal = ref(false)
+const title = ref("")
+const message = ref("")
 
 onMounted(() => {
   newGame()
@@ -32,18 +36,37 @@ function showBombs() {
   overlapBoard.board = gameBoardData.board.map(row => row.map(cell => 0))
 }
 
+function showWinnerModal() {
+  title.value = "Congratulations!"
+  message.value = "You won the game."
+  showModal.value = true
+}
+
+function showLoserModal() {
+  title.value = "Sorry!"
+  message.value = "You lose the game."
+  showModal.value = true
+}
+
 function handleClick(position: Position) {
   if(inGame.value) {
     if(!checkPosition(position, gameBoardData.board, overlapBoard.board)) {
-      alert('You Lose')
+      // Show bomb
+      overlapBoard.board[position.x][position.y] = 0
+      // Show loser modal
+      showLoserModal()
+      // Set gane as ended
       inGame.value = false
     }
 
     if(checkWinCondition(gameBoardData.board, overlapBoard.board)) {
+      // Show all bomb
       showBombs()
+      // Dispatch confetti
       dispatchConfetti()
-      showWinnerModal.value = true
-
+      // Show winner modal
+      showWinnerModal()
+      // Set gane as ended
       inGame.value = false
     }
   }
@@ -73,7 +96,11 @@ function newGame() {
   <section class="actions">
     <button type="button" @click="newGame">New Game</button>
   </section>
-  <WinnerModal :show-modal="showWinnerModal" @close="showWinnerModal = false" />
+  <Modal 
+    :show-modal="showModal" 
+    @close="showModal = false"
+    :title="title"
+    :message="message"  />
 </template>
 
 <style scoped>

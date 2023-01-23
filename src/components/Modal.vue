@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 defineProps({
   showModal: {
     type: Boolean,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  message: {
+    type: String,
     required: true
   }
 })
@@ -12,8 +18,8 @@ defineProps({
 <template>
   <div class="overlay" v-if="showModal">
     <div class="modal">
-      <h2>Congratulations!</h2>
-      <p>You won the game!</p>
+      <h2>{{ title }}</h2>
+      <p>{{ message }}</p>
       <button @click="$emit('close')">Close</button>
     </div>
   </div>
