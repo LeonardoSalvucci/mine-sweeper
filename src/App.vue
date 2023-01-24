@@ -4,8 +4,7 @@ import Modal from './components/Modal.vue'
 import Social from './components/Social.vue'
 import Clock from './components/Clock.vue'
 
-import { 
-  type Position, 
+import {  
   createRandomGameBoard, 
   createBoardData, 
   checkPosition,
@@ -15,7 +14,7 @@ import {
 import { dispatchConfetti } from './logic/confetti';
 
 import { MINE, FLAG, gameSettings, TOUCH_HOLD } from './constants';
-import { Board, GameSettings, TouchTracker } from './types';
+import { Board, GameSettings, TouchTracker, Position } from './types';
 
 const size = ref(15)
 const bombs = ref(5)
