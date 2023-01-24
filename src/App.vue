@@ -184,7 +184,8 @@ function increaseTime() {
     <button 
       v-for="setting in gameSettings"
       :key="setting.label"
-      type="button" @click="newGame(setting)">{{ setting.label }}
+      type="button" @click="newGame(setting)"
+      :data-testid="`${setting.label.toLowerCase()}`">{{ setting.label }}
     </button>
   </section>
   <section class="reference">
