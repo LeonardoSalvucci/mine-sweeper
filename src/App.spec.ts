@@ -1,15 +1,29 @@
-import { describe, it, beforeEach, expect } from 'vitest'
+import { describe, it, beforeEach, expect, vi } from 'vitest'
 import { shallowMount, type VueWrapper, type DOMWrapper } from '@vue/test-utils'
+
+import {
+  createRandomGameBoard, 
+  createBoardData, 
+  checkPosition,
+  checkWinCondition
+} from './logic/game'
+import { createMockBoardData, createMockRandomGameBoard } from './logic/gameMock'
 import App from './App.vue'
 
+vi.mock('./logic/game')
+
 describe('MineSweeper', () => {
-  let app: VueWrapper;
-
-  beforeEach(() => {
-    app = shallowMount(App)
-  })
-
+  
   describe('Board', () => {
+    let app: VueWrapper;
+  
+    beforeEach(() => {
+      vi.mocked(createRandomGameBoard).mockRestore()
+      vi.mocked(createBoardData).mockRestore()
+      vi.mocked(checkPosition).mockRestore()
+      vi.mocked(checkWinCondition).mockRestore()
+      app = shallowMount(App)
+    })
     it('should render a 9x9 board by default', () => {
       expect(app.findAll('.cell')).toHaveLength(81)
     })
@@ -38,6 +52,32 @@ describe('MineSweeper', () => {
       const semiSeniorButton = app.find<HTMLButtonElement>('[data-testid="senior"]')
       await semiSeniorButton.trigger('click')
       expect(app.findAll('.cell')).toHaveLength(900)
+    })
+  })
+
+  describe('Game', () => {
+    let app: VueWrapper;
+    
+    // We are going to mock createRandomGame function to allways return the same board
+    // There's will be only one mine in cell 0,0 with a board of 9x9
+    beforeEach(async () => {
+      // Mock createRandomGame function
+      vi.mocked(createRandomGameBoard).mockImplementation(createMockRandomGameBoard)
+      vi.mocked(createBoardData).mockImplementation(createMockBoardData)
+      vi.mocked(checkPosition).mockRestore()
+      vi.mocked(checkWinCondition).mockRestore()
+      app = shallowMount(App)
+    })
+
+    it('verify if the board is correct', () => {
+      expect(app.findAll('.cell')).toHaveLength(9)
+    })
+
+    it('should add a flag when right click on a cell', async () => {
+      const cell = app.find<HTMLDivElement>('.cell')
+      await cell.trigger('click.right')
+
+      expect(app.findAll('.flag')).toHaveLength(1)
     })
   })
 })
