@@ -1,5 +1,3 @@
-import { Position } from "./logic/game";
-
 export interface Board {
   board: number[][];
 }
