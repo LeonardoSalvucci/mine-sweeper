@@ -15,3 +15,8 @@ export interface TouchTracker {
   position?: Position;
   lastTime?: number;
 }
+
+export interface Position {
+  x: number;
+  y: number;
+}

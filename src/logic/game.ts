@@ -1,8 +1,6 @@
+import { Position } from '../types'
+
 const MINE = -1;
-export interface Position {
-  x: number;
-  y: number;
-}
 
 function isValidPosition(position: Position, grid: number[][]) {
   return (position.x >= 0) && (position.x < grid[0].length) &&
