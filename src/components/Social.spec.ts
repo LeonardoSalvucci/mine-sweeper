@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import Social from './Social.vue'
 
 describe('Social Component', () => {
   it('should render component with two anchors', async () => {
-    const wrapper = mount(Social)
+    const wrapper: VueWrapper = mount(Social)
     expect(wrapper.findAll('a')).toHaveLength(2)
   })
 
