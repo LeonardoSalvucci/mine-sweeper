@@ -8,9 +8,13 @@ import {
   checkWinCondition
 } from './logic/game'
 import { createMockBoardData, createMockRandomGameBoard } from './logic/gameMock'
+import { dispatchConfetti } from './logic/confetti'
 import App from './App.vue'
 
 vi.mock('./logic/game')
+vi.mock('./logic/confetti', () => ({
+  dispatchConfetti: vi.fn()
+}))
 
 describe('MineSweeper', () => {
   
@@ -78,6 +82,39 @@ describe('MineSweeper', () => {
       await cell.trigger('click.right')
 
       expect(app.findAll('.flag')).toHaveLength(1)
+    })
+
+    it('should remove a flag when right click on a cell with a flag', async () => {
+      const cell = app.find<HTMLDivElement>('.cell')
+      await cell.trigger('click.right')
+      await cell.trigger('click.right')
+
+      expect(app.findAll('.flag')).toHaveLength(0)
+    })
+
+    it('should add explosion class when click a mine', async () => {
+      const cell = app.find<HTMLDivElement>('.cell')
+      await cell.trigger('click')
+
+      expect(cell.classes()).toContain('explosion')
+      
+    })
+
+    it('should show only one cell when click on a cell with a number', async () => {
+      const cell = app.findAll<HTMLDivElement>('.cell').at(1)
+      if(!cell) throw new Error('Cell not found')
+      expect(app.findAll('.overlap')).toHaveLength(9)
+      await cell.trigger('click')
+      expect(app.findAll('.overlap')).toHaveLength(8) // only one less than before
+    })
+
+    it('should show all adjacents cells when click on an empty cell, in this board this cause to win', async () => {
+      const cell = app.findAll<HTMLDivElement>('.cell').at(-1)
+      if(!cell) throw new Error('Cell not found')
+      expect(app.findAll('.overlap')).toHaveLength(9)
+      await cell.trigger('click')
+      expect(app.findAll('.overlap')).toHaveLength(0) // all cells are visible now, the mine to because we win
+      expect(vi.mocked(dispatchConfetti).mock.calls).toHaveLength(1) // confetti should be called
     })
   })
 })
