@@ -5,6 +5,7 @@
   <header class="container">
     <div class="social-container">
       <a
+        data-testid="github-link"
         class="icon"
         href="https://github.com/LeonardoSalvucci/mine-sweeper"
         target="_blank"
@@ -12,6 +13,7 @@
         <img src="/img/github.svg" />
       </a>
       <a
+        data-testid="linkedin-link"
         class="icon"
         href="https://www.linkedin.com/in/leonardosalvucci/"
         target="_blank"
