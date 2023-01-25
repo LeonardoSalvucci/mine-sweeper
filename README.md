@@ -15,4 +15,4 @@ pnpm run dev
 pnpm run build
 ```
 
-Live Preview https://mine-sweeper-rho.vercel.app/
+Live Preview https://mine-sweeper.lesalvucci.xyz. Deplpoyed on [AWS Amplify](https://aws.amazon.com/amplify/)
